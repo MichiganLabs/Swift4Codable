@@ -6,8 +6,17 @@ import Foundation
 //: The runner also formats the print output of each example into its
 //: own section
 struct Runner {
-    static let encoder = JSONEncoder()
-    static let decoder = JSONDecoder()
+    static let encoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+//        encoder.dateEncodingStrategy = .iso8601
+        return encoder
+    }()
+    static let decoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+//        decoder.dateDecodingStrategy = .iso8601
+        return decoder
+    }()
 
     let name: String
 
@@ -85,6 +94,7 @@ Runner("Custom Date Formatter").run { (encoder, decoder) in
             let formatter = DateFormatter()
             formatter.dateStyle = .short
             formatter.timeStyle = .short
+            formatter.locale = Locale(identifier: "en_US")
             return formatter
         }()
 
